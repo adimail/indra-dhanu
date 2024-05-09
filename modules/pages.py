@@ -41,8 +41,8 @@ def home_page():
         st.markdown(
             """
             1. ALlow camera access
+            1. You can take images from camera as well as you can upload images directly
             1. get the analysis of the image data in the _model_ page
-            1. Tou can take images from camera as well as you can upload images directly
             """
         )
 
