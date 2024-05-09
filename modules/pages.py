@@ -87,7 +87,8 @@ def home_page():
     st.image("assets/indradhanu.png", caption='Indra Dhanu Backend', use_column_width=True)
     st.divider()
     st.markdown("""
-    You can read more about the fundamentals of image processing with openCV, [here](https://github.com/adimail/computerVisionNotes) is my github repo 
+    You can read more about the fundamentals of image processing with openCV, [here](https://github.com/adimail/computerVisionNotes) is [my](https://adimail.github.io) github repo 
+    
     9 May 2024
                 
     Indradhanu was made as a term work project for EDA and AI course.""")
