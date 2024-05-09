@@ -4,6 +4,31 @@ import streamlit as st
 from modules.utils import process_image
 from modules.utils import adjust_threshold
 
+def model_page():
+    st.title("Color Detection")
+
+    upload, cam = st.tabs(["Upload Image File", "Camera Input"])
+
+    threshold = adjust_threshold()
+
+    with cam:
+        img_file_buffer = st.camera_input("Indradhanu image input", key="camera", label_visibility="hidden")
+
+        if img_file_buffer is not None:
+            img_bytes = np.asarray(bytearray(img_file_buffer.read()), dtype=np.uint8)
+            image = cv2.imdecode(img_bytes, cv2.IMREAD_COLOR)
+            process_image(image, threshold)
+
+
+    with upload:
+        uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+
+        if uploaded_file is not None:
+            # st.image(uploaded_file, caption='Uploaded Image', use_column_width=True)
+            file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+            image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+            process_image(image, threshold)
+
 def home_page():
 
     st.title("Indra Dhanu")
@@ -17,12 +42,13 @@ def home_page():
             """
             1. ALlow camera access
             1. get the analysis of the image data in the _model_ page
+            1. Tou can take images from camera as well as you can upload images directly
             """
         )
 
     st.divider()
 
-    st.image("assets/indradhanu-overview.png", caption='Indra Dhanu Backend', use_column_width=True)
+    st.image("assets/indra-dhanu-sequencediagram.png", caption='Indra Dhanu Backend', use_column_width=True)
 
     st.divider()
 
@@ -61,36 +87,24 @@ def home_page():
     st.image("assets/indradhanu.png", caption='Indra Dhanu Backend', use_column_width=True)
     st.divider()
     st.markdown("""
+    You can read more about the fundamentals of image processing with openCV, [here](https://github.com/adimail/computerVisionNotes) is my github repo 
     9 May 2024
                 
     Indradhanu was made as a term work project for EDA and AI course.""")
 
-def model_page():
-    st.title("Color Detection")
-
-    option = st.selectbox("Select Option:", ["Camera Input", "Upload Image File"], index=0)
-    threshold = adjust_threshold()
-
-    if option == "Camera Input":
-        img_file_buffer = st.camera_input("Indradhanu image input", key="camera", label_visibility="hidden")
-
-        if img_file_buffer is not None:
-            img_bytes = np.asarray(bytearray(img_file_buffer.read()), dtype=np.uint8)
-            image = cv2.imdecode(img_bytes, cv2.IMREAD_COLOR)
-            process_image(image, threshold)
-
-    elif option == "Upload Image File":
-        uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
-
-        if uploaded_file is not None:
-            st.image(uploaded_file, caption='Uploaded Image', use_column_width=True)
-            file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
-            image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
-            process_image(image, threshold)
-
 def program_code():
     st.title("Python program for Indra Dhanu")
     st.divider()
+
+    st.image("assets/indra-dhanu-sequencediagram.png", caption='Indra Dhanu Backend', use_column_width=True)
+
+    st.markdown("""
+    ## Color channels
+    In computer vision and image processing, an image is typically represented in terms of color channels. These channels are the fundamental building blocks that represent different aspects of color information within an image.
+
+    - RGB (Red, Green, Blue): This is the most common color space, where each pixel in an image is represented as a combination of red, green, and blue intensity values. RGB is additive, meaning colors are created by adding different intensities of red, green, and blue light together.
+    - HSV (Hue, Saturation, Value): Unlike RGB, HSV separates color information (hue), saturation, and brightness (value) into three distinct channels. This makes it more intuitive for certain color-based tasks, such as color detection and segmentation.
+    """)
 
     st.markdown("""
     ```python
@@ -106,7 +120,20 @@ def program_code():
 
         return detected_colors
     ```
-                
+    The detect_colors function takes an image and a threshold as input and returns a dictionary containing the detected colors along with their respective percentages in the image. Here's what the output dictionary looks like:
+    ```
+    {
+        "red": 32.68,
+        "black": 68.32,
+        ...
+    }
+
+    ```         
+    ---
+    
+    ### Util Functions
+    
+    
     ```python
     def adjust_threshold():
         threshold = st.sidebar.slider("Adjust Color Detection threshold", 0.0, 10.0, 2.0, 0.1)
