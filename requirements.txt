@@ -1,0 +1,6 @@
+pipreqs==0.4.13
+pyarrow==14.0.2
+pydeck==0.8.1b0
+requests==2.31.0
+streamlit==1.30.0
+streamlit-option-menu==0.3.6
