@@ -17,8 +17,8 @@ def main():
     with st.sidebar:
         page = option_menu(
             "Indra Dhanu", ["Home", "Model", "Code"],
-            icons=["house-door-fill", "tools"],
-            menu_icon="file-earmark-code-fill",
+            icons=["house-door-fill", "tools", "code-slash"],
+            menu_icon="camera",
             default_index=1
         )
 
